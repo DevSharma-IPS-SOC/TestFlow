@@ -1,4 +1,7 @@
 {
-    "project": "Demo Application",
-    "run_id": "RUN002"
+    "project": 123,
+    "run_id": 123,
+    "test_cases":["500", 500, {"100" : 1000}
+    ]
+
 }
