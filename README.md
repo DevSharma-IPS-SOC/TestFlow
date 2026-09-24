@@ -426,13 +426,6 @@ These will be introduced only when required by the relevant project phase.
 * [ ] GitHub documentation
 * [ ] Usage guide
 
-## Phase 17 — College Project
-
-* [ ] Project report
-* [ ] System diagrams
-* [ ] Presentation
-* [ ] Viva preparation
-
 ---
 
 # 📈 Planned Version Milestones
