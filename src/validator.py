@@ -35,7 +35,7 @@ def validate_root(data):
         error_dic["valid"] = False
         error_dic["errors"].append("'test_cases' must be a list.")
     else:
-        index_invalid = []
+        index_invalid = [] #to check if any part of data is not dictionary it will add its index position
         for index, dictionary in enumerate(data["test_cases"]):
 
             if not isinstance(dictionary, dict):
@@ -77,11 +77,13 @@ def validate_root(data):
                     error_dic["valid"] = False
                     error_dic["errors"].append("'error' must be a string or none.")
 
+        # semantic_test = semantic_validation(data)
 
         if not index_invalid == []:
             error_dic["valid"] = False
             error_dic["errors"].append(f"{index_invalid} These indices contain values that are not dictionaries.")
 
+        
 
 
     return error_dic
