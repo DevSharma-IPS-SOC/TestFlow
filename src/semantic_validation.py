@@ -17,17 +17,28 @@ def semantic_validation(data):
         
         if report["status"] in allowed_status:
             if report["response_time"] >= 0:
-                if report["status"] == "PASS" and report["error"] == None:
-                    case_report["Passed_test_cases"].append(f"{report["test_id"]}: Passed Case: Valid")
+                if report["status"] == "PASS":
+                    if report["error"] is None:
+                        case_report["Passed_test_cases"].append(f"{report["test_id"]}: Passed Case: Valid")
+                    else:
+                        case_report["Failed"].append(f"{report["test_id"]}: PASS test must have error = None")
 
-                elif report["status"] == "FAIL" and isinstance(report["error"], str):
-                    case_report["Passed_test_cases"].append(f"{report["test_id"]}: Failed Case: Valid")
+                elif report["status"] == "FAIL":
+                    if isinstance(report["error"], str):
+                        case_report["Passed_test_cases"].append(f"{report["test_id"]}: Failed Case: Valid")
+                    else:
+                        case_report["Failed"].append(f"{report["test_id"]}: FAIL test must contain an error")
+                        
+                    
+                elif report["status"] == "SKIP":
+                    if report["response_time"] == 0:
+                        if report["error"] is None:
+                            case_report["Passed_test_cases"].append(f"{report["test_id"]}: Skipped Case: Valid")
+                        else:
+                            case_report["Failed"].append(f"{report["test_id"]}: SKIP test must have error = None")
+                    else:
+                        case_report["Failed"].append(f"{report["test_id"]}: SKIP test must have response time == 0")
 
-                elif report["status"] == "SKIP" and report["response_time"] == 0 and report["error"] == None:
-                    case_report["Passed_test_cases"].append(f"{report["test_id"]}: Skipped Case: Valid")
-
-                else:
-                    case_report["Failed"].append([f"Invalid: Test Id: {report["test_id"]}, Response time: {report["response_time"]}, Status: {report["status"]}, error: {report["error"]}"])
                 
                 # Test_case_error["test_id"] = report["test_id"]
                 # Test_case_error["response_time"] = report["response_time"]

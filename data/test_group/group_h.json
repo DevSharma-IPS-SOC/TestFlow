@@ -1,0 +1,69 @@
+{
+    "project": "Demo Application",
+    "run_id": "RUN_H001",
+    "test_cases": [
+        {
+            "test_id": "TC001",
+            "test_name": "User Login",
+            "status": "PASS",
+            "response_time": 100,
+            "error": null
+        },
+        {
+            "test_id": "TC002",
+            "test_name": "Product Search",
+            "status": "ERROR",
+            "response_time": 200,
+            "error": null
+        },
+        {
+            "test_id": "TC003",
+            "test_name": "Payment",
+            "status": "PASS",
+            "response_time": -50,
+            "error": null
+        },
+        {
+            "test_id": "TC004",
+            "test_name": "Dashboard",
+            "status": "PASS",
+            "response_time": 150,
+            "error": "UNEXPECTED_ERROR"
+        },
+        {
+            "test_id": "TC005",
+            "test_name": "Search",
+            "status": "FAIL",
+            "response_time": 500,
+            "error": null
+        },
+        {
+            "test_id": "TC006",
+            "test_name": "Profile",
+            "status": "SKIP",
+            "response_time": 100,
+            "error": null
+        },
+        {
+            "test_id": "TC007",
+            "test_name": "Settings",
+            "status": "SKIP",
+            "response_time": 0,
+            "error": "USER_SKIPPED"
+        },
+        {
+            "test_id": "TC005",
+            "test_name": "Search Retry",
+            "status": "FAIL",
+            "response_time": 600,
+            "error": "TIMEOUT"
+        },
+        {
+            "test_id": "TC008",
+            "test_name": "Reports",
+            "status": "SKIP",
+            "response_time": 0,
+            "error": null
+        }
+    ]
+}
