@@ -1,9 +1,25 @@
 def semantic_validation(data):
     case_report = {
-        "Duplicate_test": [],
-        "Failed": [],
-        "Passed_test_cases": []
+        "valid": False,
+
+        "summary":{
+            "total": 0,
+            "passed": 0,
+            "failed": 0,
+            "error_count": 0,
+            "duplicate_count": 0
+        },
+
+
+        "errors":[
+
+        ],
+
+        "duplicate_ids": []
+        
     }
+
+
     allowed_status = ["PASS", "FAIL", "SKIP"]
     unique_test_id = []
 
@@ -12,44 +28,56 @@ def semantic_validation(data):
         if report["test_id"] not in unique_test_id:
             unique_test_id.append(report["test_id"])
         else:
-            case_report["Duplicate_test"].append(f"{report["test_id"]}")
+            case_report["summary"]["duplicate_count"] += 1
+            case_report["duplicate_ids"].append(f"{report['test_id']}")
 
         
         if report["status"] in allowed_status:
             if report["response_time"] >= 0:
                 if report["status"] == "PASS":
                     if report["error"] is None:
-                        case_report["Passed_test_cases"].append(f"{report["test_id"]}: Passed Case: Valid")
+                        case_report["summary"]["passed"] += 1
                     else:
-                        case_report["Failed"].append(f"{report["test_id"]}: PASS test must have error = None")
+                        case_report["summary"]["failed"] += 1
+                        case_report["errors"].append({"test_id" : report["test_id"], "rule": "PASS_ERROR", "message": "PASS test must have error = None"})
 
                 elif report["status"] == "FAIL":
                     if isinstance(report["error"], str):
-                        case_report["Passed_test_cases"].append(f"{report["test_id"]}: Failed Case: Valid")
+                        case_report["summary"]["passed"] += 1
                     else:
-                        case_report["Failed"].append(f"{report["test_id"]}: FAIL test must contain an error")
+                        case_report["summary"]["failed"] += 1
+                        case_report["errors"].append({"test_id" : report["test_id"], "rule": "FAIL_ERROR", "message": "FAIL test must contain an error message"})
                         
                     
                 elif report["status"] == "SKIP":
-                    if report["response_time"] == 0:
-                        if report["error"] is None:
-                            case_report["Passed_test_cases"].append(f"{report["test_id"]}: Skipped Case: Valid")
-                        else:
-                            case_report["Failed"].append(f"{report["test_id"]}: SKIP test must have error = None")
-                    else:
-                        case_report["Failed"].append(f"{report["test_id"]}: SKIP test must have response time == 0")
-
-                
-                # Test_case_error["test_id"] = report["test_id"]
-                # Test_case_error["response_time"] = report["response_time"]
-                # Test_case_error["status"] = report["status"]
-                # Test_case_error["error"] = report["error"]
+                    if report["response_time"] == 0 and report["error"] is None :
+                        case_report["summary"]["passed"] += 1
+                    elif report["response_time"] != 0 and report["error"] is None :
+                        case_report["summary"]["failed"] += 1
+                        case_report["errors"].append({"test_id" : report["test_id"], "rule": "SKIP_RESPONSE_TIME", "message": "SKIP test must have response_time = 0"})
+                    elif report["response_time"] == 0 and report["error"] is not None:
+                        case_report["summary"]["failed"] += 1
+                        case_report["errors"].append({"test_id" : report["test_id"], "rule": "SKIP_ERROR", "message": "SKIP test must have error = None"})
+                    elif report["response_time"] != 0 and report["error"] is not None :
+                        case_report["summary"]["failed"] += 1
+                        case_report["errors"].append({"test_id" : report["test_id"], "rule": "SKIP_RESPONSE_TIME", "message": "SKIP test must have response_time = 0"})
+                        case_report["errors"].append({"test_id" : report["test_id"], "rule": "SKIP_ERROR", "message": "SKIP test must have error = None"})
+    
 
             else:
-                case_report["Failed"].append(f"Invalid: Response time on {report["test_id"]}")
+                case_report["summary"]["failed"] += 1
+                case_report["errors"].append({"test_id" : report["test_id"], "rule": "NEGATIVE_RESPONSE_TIME", "message": "Response time must be greater than or equal to 0"})
         
         else:
-            case_report["Failed"].append(f"Invalid: Status on {report["test_id"]}")
+            case_report["summary"]["failed"] += 1
+            case_report["errors"].append({"test_id": report["test_id"], "rule": "INVALID_STATUS", "message" : "Status must be one of PASS, FAIL, or SKIP"})
+
+        case_report["summary"]["total"] += 1
+
+    case_report["summary"]["error_count"] = len(case_report["errors"])
+    if case_report["errors"] == [] and case_report["duplicate_ids"] == []:
+        case_report["valid"] = True
+
 
             
 
