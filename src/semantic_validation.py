@@ -1,7 +1,6 @@
 def semantic_validation(data):
     case_report = {
         "valid": False,
-
         "summary":{
             "total": 0,
             "passed": 0,
@@ -9,24 +8,22 @@ def semantic_validation(data):
             "error_count": 0,
             "duplicate_count": 0
         },
-
-
-        "errors":[
-
-        ],
-
+        "errors":[],
         "duplicate_ids": []
-        
     }
 
 
+
+    
+
+
     allowed_status = ["PASS", "FAIL", "SKIP"]
-    unique_test_id = []
+    unique_test_id = ()
 
     #Semantic Validation True/False/Skip        
     for report in data["test_cases"]:
         if report["test_id"] not in unique_test_id:
-            unique_test_id.append(report["test_id"])
+            unique_test_id.append(report["test_id"],)
         else:
             case_report["summary"]["duplicate_count"] += 1
             case_report["duplicate_ids"].append(f"{report['test_id']}")
@@ -52,15 +49,11 @@ def semantic_validation(data):
                 elif report["status"] == "SKIP":
                     if report["response_time"] == 0 and report["error"] is None :
                         case_report["summary"]["passed"] += 1
-                    elif report["response_time"] != 0 and report["error"] is None :
+                    if report["response_time"] != 0:
                         case_report["summary"]["failed"] += 1
                         case_report["errors"].append({"test_id" : report["test_id"], "rule": "SKIP_RESPONSE_TIME", "message": "SKIP test must have response_time = 0"})
-                    elif report["response_time"] == 0 and report["error"] is not None:
+                    if report["error"] is not None:
                         case_report["summary"]["failed"] += 1
-                        case_report["errors"].append({"test_id" : report["test_id"], "rule": "SKIP_ERROR", "message": "SKIP test must have error = None"})
-                    elif report["response_time"] != 0 and report["error"] is not None :
-                        case_report["summary"]["failed"] += 1
-                        case_report["errors"].append({"test_id" : report["test_id"], "rule": "SKIP_RESPONSE_TIME", "message": "SKIP test must have response_time = 0"})
                         case_report["errors"].append({"test_id" : report["test_id"], "rule": "SKIP_ERROR", "message": "SKIP test must have error = None"})
     
 

@@ -3,7 +3,7 @@ from src.validator import validate_root
 from src.semantic_validation import semantic_validation
 
 def main():
-    data = load_json("data/test_group/group_a.json")
+    data = load_json("data/invalid_tests_a.json")
     error_result = validate_root(data)
 
     print(f"Root Validation --> \nValid: {error_result["valid"]} \nErrors: {error_result["errors"]} \n")
