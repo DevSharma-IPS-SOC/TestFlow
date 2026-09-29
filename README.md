@@ -1,123 +1,137 @@
 # TestFlow 🧪
 
-**TestFlow** is a Python-based **QA Test Analytics & Validation System** designed to validate software test execution data and, in later phases, analyze test results, failures, performance, and quality risks.
+> **Python QA Test Analytics & Validation System**
 
-The project is being developed incrementally to simulate how a real-world QA/data-quality system would be designed and built.
+TestFlow is a Python-based project for validating software test
+execution data. It currently focuses on reliable JSON input handling,
+structural validation, semantic/business-rule validation, duplicate
+detection, and structured validation results.
 
----
+The project is being developed incrementally so that each version adds a
+clear layer of functionality.
 
-## 🚀 Current Status
+------------------------------------------------------------------------
 
-**Development Phase:** Phase 3 — Data Validation
-**Current Version:** v0.1 (Validation Engine in Progress)
+## 📊 Project Progress
 
-### Completed
+**Current Version: v0.1 --- Basic Input + Validation Engine**\
+**Current Phase: Phase 3 --- Data Validation**\
+**Status: ✅ v0.1 functionality complete and regression-tested**
 
-* ✅ Project setup
-* ✅ Project folder structure
-* ✅ JSON input handling
-* ✅ JSON parsing
-* ✅ Root-level structural validation
-* ✅ Root-level type validation
-* ✅ Test-case structure validation
-* ✅ Test-case type validation
-* ✅ Detection of non-dictionary test cases
-* ✅ Structured validation error reporting
+  --------------------------------------------------------------------------------------
+  Area                    Status                  Documentation
+  ----------------------- ----------------------- --------------------------------------
+  Project setup           ✅ Complete             [Project
+                                                  Structure](#-project-structure)
 
-### Not Implemented Yet
+  Requirements & data     ✅ Complete             [Data Contract](#-data-contract)
+  contract                                        
 
-* ⏳ Semantic / business-rule validation
-* ⏳ Data cleaning
-* ⏳ Test result analysis
-* ⏳ Failure analysis
-* ⏳ Performance analysis
-* ⏳ Risk detection
-* ⏳ Reporting
-* ⏳ Database / historical analysis
-* ⏳ Dashboard / API
+  JSON parser             ✅ Complete             [Parser](#-parser)
 
-> **Note:** Semantic validation is intentionally excluded from the current version and will be implemented in the next development session.
+  Structural validation   ✅ Complete             [Structural
+                                                  Validation](#-structural-validation)
 
----
+  Semantic validation     ✅ Complete             [Semantic
+                                                  Validation](#-semantic-validation)
 
-# 📌 Project Objective
+  Duplicate detection     ✅ Complete             [Duplicate
+                                                  Detection](#-duplicate-detection)
 
-TestFlow will eventually accept test execution data and process it through multiple stages:
+  Main pipeline           ✅ Complete             [Application Flow](#-application-flow)
+  integration                                     
 
-```text
-Input Data
-    ↓
+  A--H regression testing ✅ Complete             [Testing](#-testing)
+
+  Error handling          ⏳ Planned              [Future Work](#-future-work)
+
+  pytest test suite       ⏳ Planned              [Future Work](#-future-work)
+
+  Data analysis           ⏳ Planned              [Roadmap](#-roadmap)
+
+  Risk detection          ⏳ Planned              [Roadmap](#-roadmap)
+
+  SQLite / history        ⏳ Planned              [Roadmap](#-roadmap)
+
+  Dashboard / API         ⏳ Planned              [Roadmap](#-roadmap)
+  --------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## 🎯 Project Objective
+
+TestFlow is intended to evolve from a simple validation utility into a
+QA analytics system that can answer questions such as:
+
+-   How many tests passed or failed?
+-   Which tests are failing?
+-   Which failures occur repeatedly?
+-   Which tests are unusually slow?
+-   Which areas have higher quality risk?
+-   How does test quality change across different test runs?
+
+The current version establishes the **input, validation, and result
+foundations** required for these later features.
+
+------------------------------------------------------------------------
+
+## 🔄 Application Flow
+
+The current v0.1 pipeline is:
+
+``` text
+User
+  │
+  ▼
+JSON File Path
+  │
+  ▼
 Parser
-    ↓
-Validation
-    ↓
-Cleaning
-    ↓
-Test Analyzer
-    ↓
-Failure Analyzer
-    ↓
-Performance Analyzer
-    ↓
-Risk Engine
-    ↓
-Report Generator
-    ↓
-Historical Storage
-    ↓
-Dashboard / API
+  │
+  ▼
+Structural Validation
+  │
+  ├── Invalid ──► Stop
+  │
+  └── Valid
+        │
+        ▼
+  Semantic Validation
+        │
+        ├── Rule Validation
+        ├── Duplicate Detection
+        ├── Summary Calculation
+        └── Structured Result
 ```
 
-The current implementation covers the **Parser → Validation** portion of this pipeline.
+### Separation of Responsibilities
 
----
+  -----------------------------------------------------------------------
+  Component                           Responsibility
+  ----------------------------------- -----------------------------------
+  `main.py`                           Application orchestration and user
+                                      input
 
-# 🏗️ Current Architecture
+  `parser.py`                         Reads and parses JSON
 
-```text
-                 ┌───────────────┐
-                 │    JSON File  │
-                 └───────┬───────┘
-                         │
-                         ▼
-                 ┌───────────────┐
-                 │    Parser     │
-                 │  parser.py    │
-                 └───────┬───────┘
-                         │
-                         ▼
-                 ┌───────────────┐
-                 │ Python Dict   │
-                 └───────┬───────┘
-                         │
-                         ▼
-                 ┌───────────────┐
-                 │   Validator   │
-                 │ validator.py  │
-                 └───────┬───────┘
-                         │
-                  ┌──────┴──────┐
-                  ▼             ▼
-              VALID          INVALID
-                               │
-                               ▼
-                        Structured Errors
-```
+  `validator.py`                      Structural/type validation
 
-### Design Principle
+  `semantic_validation.py`            Semantic validation orchestration
+                                      and result aggregation
 
-The project follows a separation-of-responsibility approach:
+  `semantic_rules/`                   Individual semantic rule validators
 
-* **Parser** → Reads and parses input.
-* **Validator** → Checks whether the parsed data follows the defined contract.
-* **Parser does not perform business validation.**
-* **Validator does not modify the original data.**
+  `output/`                           Supporting validation output
+                                      utilities
 
----
+  `data/`                             Test and sample datasets
+  -----------------------------------------------------------------------
 
-# 📂 Project Structure
+------------------------------------------------------------------------
 
-```text
+## 📁 Project Structure
+
+``` text
 TestFlow/
 │
 ├── main.py
@@ -126,25 +140,46 @@ TestFlow/
 │
 ├── data/
 │   ├── sample_tests.json
-│   ├── invalid_tests.json
+│   ├── invalid_parser.json
+│   ├── invalid_root.json
 │   ├── invalid_structure.json
-│   └── ...
+│   ├── invalid_tests.json
+│   ├── invalid_tests_a.json
+│   │
+│   └── test_group/
+│       ├── group_a.json
+│       ├── group_b.json
+│       ├── group_c.json
+│       ├── group_d.json
+│       ├── group_e.json
+│       ├── group_f.json
+│       ├── group_g.json
+│       └── group_h.json
 │
 ├── output/
 │   └── dict_error.py
 │
 └── src/
     ├── parser.py
-    └── validator.py
+    ├── validator.py
+    ├── semantic_validation.py
+    │
+    └── semantic_rules/
+        ├── __init__.py
+        ├── validate_status.py
+        ├── validate_response_time.py
+        ├── validate_pass.py
+        ├── validate_fail.py
+        └── validate_skip.py
 ```
 
----
+------------------------------------------------------------------------
 
-# 📄 Data Contract
+## 📄 Data Contract
 
-TestFlow currently expects JSON data following this structure:
+TestFlow currently expects JSON data with the following structure:
 
-```json
+``` json
 {
     "project": "E-Commerce Application",
     "run_id": "RUN_001",
@@ -160,328 +195,452 @@ TestFlow currently expects JSON data following this structure:
 }
 ```
 
----
+### Root-Level Fields
 
-# 🔹 Root-Level Fields
+  Field          Required   Type
+  -------------- ---------- --------
+  `project`      Yes        String
+  `run_id`       Yes        String
+  `test_cases`   Yes        List
 
-| Field        | Required | Expected Type |
-| ------------ | -------- | ------------- |
-| `project`    | Yes      | String        |
-| `run_id`     | Yes      | String        |
-| `test_cases` | Yes      | List          |
+### Test-Case Fields
 
----
+  Field             Required   Type
+  ----------------- ---------- -----------------
+  `test_id`         Yes        String
+  `test_name`       Yes        String
+  `status`          Yes        String
+  `response_time`   Yes        Integer / Float
+  `error`           Yes        String / `null`
 
-# 🔹 Test Case Fields
+------------------------------------------------------------------------
 
-Each item inside `test_cases` must currently be a dictionary containing:
+## 🔍 Structural Validation
 
-| Field           | Required | Expected Type   |
-| --------------- | -------- | --------------- |
-| `test_id`       | Yes      | String          |
-| `test_name`     | Yes      | String          |
-| `status`        | Yes      | String          |
-| `response_time` | Yes      | Integer / Float |
-| `error`         | Yes      | String / `null` |
+Structural validation is implemented in:
 
----
+``` text
+src/validator.py
+```
 
-# 🔍 Current Validation
+It verifies:
 
-The validator currently performs **structural and type validation**.
+-   Root data is a dictionary.
+-   `project` exists and is a string.
+-   `run_id` exists and is a string.
+-   `test_cases` exists and is a list.
+-   Each test case is a dictionary.
+-   `test_id` exists and is a string.
+-   `test_name` exists and is a string.
+-   `status` exists and is a string.
+-   `response_time` exists and is numeric.
+-   `error` exists and is a string or `null`.
 
-### Root Validation
+Structural validation does **not** perform business-rule validation.
 
-It checks whether:
+------------------------------------------------------------------------
 
-* Root data is a dictionary.
-* `project` exists.
-* `project` is a string.
-* `run_id` exists.
-* `run_id` is a string.
-* `test_cases` exists.
-* `test_cases` is a list.
+## 🧠 Semantic Validation
 
-### Test Case Validation
+Semantic validation is implemented in:
 
-For every test case, it checks:
+``` text
+src/semantic_validation.py
+```
 
-* The item is a dictionary.
-* `test_id` exists and is a string.
-* `test_name` exists and is a string.
-* `status` exists and is a string.
-* `response_time` exists and is numeric.
-* `error` exists and is either a string or `null`.
+Individual rules are separated into:
 
----
+``` text
+src/semantic_rules/
+```
 
-# ⚠️ Validation Error Format
+### Rule Validators
 
-TestFlow uses a structured validation result:
+  -------------------------------------------------------------------------------
+  Validator                    Rule                       Requirement
+  ---------------------------- -------------------------- -----------------------
+  `validate_status()`          `INVALID_STATUS`           Status must be `PASS`,
+                                                          `FAIL`, or `SKIP`
 
-```python
+  `validate_response_time()`   `NEGATIVE_RESPONSE_TIME`   Response time must be ≥
+                                                          0
+
+  `validate_pass()`            `PASS_ERROR`               PASS must have
+                                                          `error = None`
+
+  `validate_fail()`            `FAIL_ERROR`               FAIL must contain an
+                                                          error message
+
+  `validate_skip()`            `SKIP_RESPONSE_TIME`       SKIP must have
+                                                          `response_time = 0`
+
+  `validate_skip()`            `SKIP_ERROR`               SKIP must have
+                                                          `error = None`
+  -------------------------------------------------------------------------------
+
+Each helper evaluates its own rule family and returns structured error
+dictionaries. `semantic_validation()` aggregates those results and
+calculates the overall summary.
+
+------------------------------------------------------------------------
+
+## 🔁 Duplicate Detection
+
+Test IDs must be unique within a test run.
+
+Duplicate detection is handled by `semantic_validation.py`.
+
+The system maintains:
+
+-   a set of IDs already seen
+-   a list of duplicate occurrences
+-   a duplicate count
+
+For example:
+
+``` text
+TC001
+TC002
+TC001
+```
+
+produces:
+
+``` text
+duplicate_ids   = ["TC001"]
+duplicate_count = 1
+```
+
+A duplicate ID is tracked separately from semantic rule violations.
+
+------------------------------------------------------------------------
+
+## 📦 Validation Result
+
+Semantic validation returns a machine-readable result:
+
+``` python
 {
     "valid": False,
+    "summary": {
+        "total": 9,
+        "passed": 3,
+        "failed": 6,
+        "error_count": 6,
+        "duplicate_count": 1
+    },
     "errors": [
-        "Required field 'project' is missing.",
-        "'run_id' must be a string."
-    ]
+        {
+            "test_id": "TC002",
+            "rule": "INVALID_STATUS",
+            "message": "Status must be one of PASS, FAIL, or SKIP"
+        }
+    ],
+    "duplicate_ids": ["TC005"]
 }
 ```
 
-For valid data:
+### Summary Definitions
 
-```python
-{
-    "valid": True,
-    "errors": []
-}
+-   `total` --- number of test-case records processed.
+-   `passed` --- test-case records with no semantic errors.
+-   `failed` --- test-case records with one or more semantic errors.
+-   `error_count` --- number of individual semantic error objects.
+-   `duplicate_count` --- number of duplicate occurrences.
+-   `valid` --- `True` only when there are no semantic errors and no
+    duplicate IDs.
+
+Important distinction:
+
+``` text
+failed      = failed test-case records
+error_count = individual rule violations
 ```
 
-This format will later make it easier to integrate validation results with:
+One test case can therefore contribute one failed record and multiple
+errors.
 
-* CLI output
-* Reports
-* APIs
-* Dashboards
-* Automated QA pipelines
+------------------------------------------------------------------------
 
----
+## 🧪 Testing
 
-# 🧩 Parser
+TestFlow currently uses dedicated JSON fixtures under:
 
-The current JSON parser is intentionally simple.
-
-```python
-import json
-
-def load_json(file_path):
-    with open(file_path, "r") as file:
-        data = json.load(file)
-
-    return data
+``` text
+data/test_group/
 ```
 
-The parser's responsibility is only to:
+### Test Groups
 
-1. Open the file.
-2. Parse JSON.
-3. Return the resulting Python object.
+  Group   Purpose
+  ------- -----------------------------------------
+  A       Valid test cases
+  B       Invalid status
+  C       Negative response time
+  D       Invalid PASS/error combination
+  E       Invalid FAIL/error combination
+  F       Invalid SKIP combinations
+  G       Duplicate test IDs
+  H       Multiple semantic errors + duplicate ID
 
-Business and structural validation are handled separately by the validator.
+### v0.1 Regression Result
 
----
+All Groups **A--H** have been executed successfully after the
+semantic-validation refactor.
 
-# 🧪 Testing the Validator
+Group H verifies combined behavior:
 
-TestFlow uses different JSON datasets to verify validation behavior.
+``` text
+total           = 9
+passed          = 3
+failed          = 6
+error_count     = 6
+duplicate_count = 1
+duplicate_ids   = ["TC005"]
+valid           = False
+```
+
+Additional pipeline tests verified:
+
+-   Valid input reaches semantic validation.
+-   Structurally invalid input stops before semantic validation.
+-   Missing files currently raise `FileNotFoundError`.
+-   Malformed JSON currently raises `JSONDecodeError`.
+
+------------------------------------------------------------------------
+
+## ▶️ How to Run
+
+### 1. Activate the virtual environment
+
+On Windows PowerShell:
+
+``` powershell
+.venv\Scripts\Activate.ps1
+```
+
+### 2. Run the application
+
+``` powershell
+python main.py
+```
+
+### 3. Enter the JSON file path
 
 Example:
 
-```text
-data/
-├── sample_tests.json
-├── invalid_tests.json
-└── invalid_structure.json
+``` text
+Enter JSON File Path: data/test_group/group_a.json
 ```
 
-These datasets are used to test different scenarios such as:
+The application then performs:
 
-* Valid JSON
-* Invalid test-case structure
-* Missing required fields
-* Incorrect data types
-* Non-dictionary test cases
-
----
-
-# 🛠️ Technologies
-
-Currently:
-
-* **Python 3**
-* **JSON**
-* **Git / GitHub**
-
-Planned technologies for later phases may include:
-
-* SQLite
-* pytest
-* pandas
-* HTML/CSS
-* FastAPI
-* Data visualization
-* Statistical analysis
-
-These will be introduced only when required by the relevant project phase.
-
----
-
-# 🗺️ Development Roadmap
-
-## Phase 0 — Project Setup
-
-* [x] Project structure
-* [x] Virtual environment
-* [x] `.gitignore`
-* [x] Initial Git repository
-
-## Phase 1 — Requirements & Data Model
-
-* [x] Define data contract
-* [x] Define root fields
-* [x] Define test-case fields
-* [x] Define initial validation requirements
-
-## Phase 2 — Input / Parser
-
-* [x] JSON file loading
-* [x] JSON parsing
-* [x] Parser testing
-* [x] Error scenario testing
-
-## Phase 3 — Data Validation
-
-* [x] Root structure validation
-* [x] Root type validation
-* [x] Test-case structure validation
-* [x] Test-case type validation
-* [ ] Semantic/business-rule validation
-
-## Phase 4 — Data Cleaning
-
-* [ ] Data normalization
-* [ ] Cleaning strategy
-* [ ] Handling inconsistent values
-
-## Phase 5 — Test Result Analyzer
-
-* [ ] Pass/fail statistics
-* [ ] Test execution summary
-* [ ] Test distribution analysis
-
-## Phase 6 — Failure Analyzer
-
-* [ ] Failure categorization
-* [ ] Error analysis
-* [ ] Failure frequency
-
-## Phase 7 — Performance Analyzer
-
-* [ ] Response-time analysis
-* [ ] Slow-test detection
-* [ ] Performance statistics
-
-## Phase 8 — Risk Detection Engine
-
-* [ ] Risk rules
-* [ ] Risk scoring
-* [ ] High-risk test detection
-
-## Phase 9 — Report Generator
-
-* [ ] CLI reports
-* [ ] Summary reports
-* [ ] Export functionality
-
-## Phase 10 — Main Integration
-
-* [ ] Complete pipeline
-* [ ] End-to-end execution
-
-## Phase 11 — Error Handling
-
-* [ ] Robust exception handling
-* [ ] User-friendly errors
-
-## Phase 12 — Testing
-
-* [ ] pytest
-* [ ] Unit tests
-* [ ] Integration tests
-
-## Phase 13 — Refactoring / OOP
-
-* [ ] Refactor modules
-* [ ] Introduce classes where appropriate
-* [ ] Improve maintainability
-
-## Phase 14 — Historical Analysis
-
-* [ ] SQLite
-* [ ] Store test runs
-* [ ] Historical comparisons
-* [ ] Trend analysis
-
-## Phase 15 — Dashboard
-
-* [ ] Web dashboard
-* [ ] Charts
-* [ ] Test analytics visualization
-
-## Phase 16 — Documentation
-
-* [ ] Complete README
-* [ ] Architecture documentation
-* [ ] GitHub documentation
-* [ ] Usage guide
-
----
-
-# 📈 Planned Version Milestones
-
-| Version  | Target                          |
-| -------- | ------------------------------- |
-| **v0.1** | Basic input + validation engine |
-| **v0.2** | Test & failure analysis         |
-| **v0.3** | Risk detection                  |
-| **v1.0** | Complete CLI system             |
-| **v1.5** | Testing + OOP + refactoring     |
-| **v2.0** | SQLite + historical analytics   |
-| **v3.0** | Dashboard / product layer       |
-
----
-
-# 🎯 Long-Term Goal
-
-TestFlow is intended to evolve from a simple Python validation project into a complete **QA analytics platform** capable of answering questions such as:
-
-```text
-How many tests passed?
-
-Which tests are failing repeatedly?
-
-Which failures are caused by the same error category?
-
-Which tests are unusually slow?
-
-Which areas of the application have the highest quality risk?
-
-How is test quality changing across different test runs?
+``` text
+Input
+  ↓
+JSON Parsing
+  ↓
+Structural Validation
+  ↓
+Semantic Validation
+  ↓
+Result Output
 ```
 
-The final system will combine **QA concepts, Python programming, data analysis, software architecture, testing, and quality-risk analysis** into one project.
+------------------------------------------------------------------------
 
----
+## 🛠️ Technologies
 
-## 👨‍💻 Development Approach
+### Currently Used
 
-TestFlow is being developed incrementally rather than building the entire system at once.
+-   Python 3
+-   JSON
+-   Git / GitHub
 
-Each phase focuses on:
+### Planned
 
-```text
-Understand → Design → Implement → Test → Refactor → Move Forward
+-   pytest
+-   SQLite
+-   pandas
+-   HTML/CSS
+-   FastAPI
+-   Data visualization
+-   Statistical analysis
+
+------------------------------------------------------------------------
+
+## 🚧 Current Limitations
+
+The current v0.1 release intentionally has a limited scope.
+
+-   JSON is currently the primary input format.
+-   Parser exceptions are not yet converted into user-friendly
+    application errors.
+-   There is no automated pytest suite yet.
+-   There is no database or historical storage.
+-   There is no performance analytics engine yet.
+-   There is no risk-scoring engine yet.
+-   There is no web dashboard.
+-   There is no API.
+-   The application currently uses a simple interactive file-path input.
+
+These are planned future stages rather than missing requirements for
+v0.1.
+
+------------------------------------------------------------------------
+
+## 🗺️ Roadmap
+
+### v0.1 --- Basic Input + Validation Engine
+
+**Status: ✅ Complete**
+
+-   JSON input
+-   Parser
+-   Structural validation
+-   Semantic validation
+-   Duplicate detection
+-   Structured results
+-   Main pipeline
+-   Regression testing
+
+### v0.2 --- Test & Failure Analysis
+
+**Planned**
+
+-   Test result statistics
+-   Failure categorization
+-   Error analysis
+-   Failure frequency
+-   Execution summaries
+
+### v0.3 --- Risk Detection
+
+**Planned**
+
+-   Risk rules
+-   Risk scoring
+-   High-risk test detection
+-   Quality-risk analysis
+
+### v1.0 --- Complete CLI
+
+**Planned**
+
+-   Improved command-line interface
+-   User-friendly error handling
+-   Report generation
+-   Export functionality
+-   Complete end-to-end workflow
+
+### v1.5 --- Testing + OOP + Refactoring
+
+**Planned**
+
+-   pytest
+-   Unit tests
+-   Integration tests
+-   Object-oriented design where appropriate
+-   Maintainability improvements
+
+### v2.0 --- Historical Analytics
+
+**Planned**
+
+-   SQLite
+-   Test-run storage
+-   Historical comparisons
+-   Trend analysis
+-   Regression-oriented analytics
+
+### v3.0 --- Dashboard / Product Layer
+
+**Planned**
+
+-   Web dashboard
+-   Charts
+-   QA analytics visualization
+-   API layer
+-   Product-style interface
+
+------------------------------------------------------------------------
+
+## 📌 Development Method
+
+TestFlow is developed incrementally:
+
+``` text
+Understand
+    ↓
+Design
+    ↓
+Implement
+    ↓
+Test
+    ↓
+Refactor
+    ↓
+Document
+    ↓
+Move to next version
 ```
 
-This approach keeps the system understandable while allowing more advanced concepts to be introduced as the project grows.
+This approach keeps each stage understandable and makes it possible to
+verify one layer before adding the next.
 
----
+------------------------------------------------------------------------
 
-## 📌 Current Development Note
+## 🎓 Project Scope
 
-**Current focus:** Phase 3 — Data Validation
+TestFlow combines concepts from:
 
-The next planned addition is **semantic/business-rule validation**, including validation of allowed status values and relationships between `status`, `response_time`, and `error`.
+-   Python programming
+-   Software testing
+-   QA engineering
+-   Data validation
+-   Data analysis
+-   Software architecture
+-   Error detection
+-   Quality-risk analysis
+-   Database systems
+-   Reporting and visualization
 
-This section will be updated once semantic validation is implemented.
+The long-term objective is to evolve the current validation engine into
+a complete QA analytics platform.
+
+------------------------------------------------------------------------
+
+## 📜 Version Milestones
+
+  Version    Target
+  ---------- ---------------------------------
+  **v0.1**   Basic Input + Validation Engine
+  **v0.2**   Test + Failure Analysis
+  **v0.3**   Risk Detection Engine
+  **v1.0**   Complete CLI
+  **v1.5**   Testing + OOP + Refactoring
+  **v2.0**   SQLite + Historical Analytics
+  **v3.0**   Dashboard / Product Layer
+
+------------------------------------------------------------------------
+
+## 👨‍💻 Current Milestone
+
+**TestFlow v0.1 --- Basic Input + Validation Engine**
+
+The current version establishes the foundation for the future analytics
+platform by providing:
+
+``` text
+Reliable Input
+     ↓
+Structural Validation
+     ↓
+Semantic Validation
+     ↓
+Duplicate Detection
+     ↓
+Structured QA Result
+```
+
+**Next major development target:** Test and Failure Analysis (`v0.2`).
