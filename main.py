@@ -10,6 +10,7 @@ def main(file_path):
     print(f"Root Validation --> \nValid: {error_result['valid']} \nErrors: {error_result['errors']} \n")
 
     if error_result["valid"]:
+        
         semantic_result = semantic_validation(data)
         print("Semantic Validation --> \n")
         for key, value in semantic_result.items():
