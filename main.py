@@ -1,6 +1,7 @@
 from src.parser import load_json
 from src.validator import validate_root
 from src.semantic_validation import semantic_validation
+from src.analysis.test_analysis import analyze_tests
 
 
 def main(file_path):
@@ -11,9 +12,11 @@ def main(file_path):
 
     if error_result["valid"]:
         semantic_result = semantic_validation(data)
-        print("Semantic Validation --> \n")
-        for key, value in semantic_result.items():
-            print(key,": ",value)
+        if semantic_result["valid"]:
+            analysis_result = analyze_tests(data)
+            print("Analysis Result -->\n")
+            for key, value in analysis_result.items():
+                print(key,": ",value)
 
     
 
