@@ -1,0 +1,34 @@
+{
+    "project": "Analysis Test C",
+    "run_id": "ANALYSIS_C001",
+    "test_cases": [
+        {
+            "test_id": "TC001",
+            "test_name": "Fast Test",
+            "status": "PASS",
+            "response_time": 50,
+            "error": null
+        },
+        {
+            "test_id": "TC002",
+            "test_name": "Slow Test",
+            "status": "PASS",
+            "response_time": 1000,
+            "error": null
+        },
+        {
+            "test_id": "TC003",
+            "test_name": "Medium Test",
+            "status": "FAIL",
+            "response_time": 450,
+            "error": "Timeout occurred"
+        },
+        {
+            "test_id": "TC004",
+            "test_name": "Skipped Test",
+            "status": "SKIP",
+            "response_time": 0,
+            "error": null
+        }
+    ]
+}

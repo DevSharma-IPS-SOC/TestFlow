@@ -1,44 +1,13 @@
 {
-    "project": "Demo Application",
-    "run_id" : "RUN001",
-    "test_cases" : [
-        {
-            "test_id": "",
-            "test_name": "Login",
-            "status": "PASS",
-            "response_time": 200,
-            "error": null
-        },
-        {
-            "test_id": "TC006",
-            "test_name": "Logout",
-            "status": "FAILED",
-            "response_time": 300,
-            "error": null
-        },
-        {
-            "test_id": "TC009",
-            "test_name": "Search",
-            "status": "PASS",
-            "response_time": -500,
-            "error": null
-        },
-        {
-            "test_id": "TC009",
-            "test_name": "Login",
-            "status": "PASS",
-            "response_time": 500,
-            "error": null
-        },
-        {
-            "test_id": "TC011",
-            "test_name": "Login",
-            "status": "PASS",
-            "response_time": "500ms",
-            "error": null
-        }
-    ]
-
-
-
+  "project": "Demo Application",
+  "run_id": "RUN_003",
+  "test_cases": [
+    {
+        "test_id": "TC001",
+        "test_name": "Dashboard",
+        "status": "FAIL",
+        "response_time": 300,
+        "error": "Something unexpected happened"
+    }
+  ]
 }
