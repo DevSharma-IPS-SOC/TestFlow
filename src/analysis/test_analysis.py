@@ -27,13 +27,24 @@ def analyze_tests(data):
                  "PAYMENT": 0.0,
                  "OTHER": 0.0
             },
-            "failure_dominance": []
-
+        "failure_dominance": []
         },
         "performance_analysis": {
             "average_response_time": 0,
             "min_response_time": 0,
             "max_response_time": 0,
+        },
+        "execution_summary": {
+            "execution_status": "",
+            "total_tests" : 0,
+            "passed_tests": 0,
+            "failed_tests": 0,
+            "skipped_tests": 0,
+            "pass_rate": 0.0,
+            "fail_rate": 0.0,
+            "skip_rate": 0.0,
+            "dominant_failure": [],
+            "average_response_time": 0.0
         }
     }
     performance_count = 0
@@ -119,9 +130,31 @@ def analyze_tests(data):
         for key, value in analyzed["failure_analysis"]["failed_frequency"].items():
             if largest_count == value:
                 analyzed["failure_analysis"]["failure_dominance"].append(key)
-    
+
+
+    #final values to execution_summary assignment
     analyzed["status_distribution"]["PASS"] = analyzed["summary"]["passed"]
     analyzed["status_distribution"]["FAIL"] = analyzed["summary"]["failed"]
     analyzed["status_distribution"]["SKIP"] = analyzed["summary"]["skipped"]
+
+    analyzed["execution_summary"]["total_tests"] = analyzed["summary"]["total"]
+    analyzed["execution_summary"]["passed_tests"] = analyzed["summary"]["passed"]
+    analyzed["execution_summary"]["failed_tests"] = analyzed["summary"]["failed"]
+    analyzed["execution_summary"]["skipped_tests"] = analyzed["summary"]["skipped"]
+    analyzed["execution_summary"]["pass_rate"] = analyzed["summary"]["pass_percentage"]
+    analyzed["execution_summary"]["fail_rate"] = analyzed["summary"]["fail_percentage"]
+    analyzed["execution_summary"]["skip_rate"] = analyzed["summary"]["skip_percentage"]
+    analyzed["execution_summary"]["dominant_failure"] = analyzed["failure_analysis"]["failure_dominance"]
+    analyzed["execution_summary"]["average_response_time"] = analyzed["performance_analysis"]["average_response_time"]
+
+    #execution_status assignment
+    if analyzed["execution_summary"]["total_tests"] == 0:
+        analyzed["execution_summary"]["execution_status"] = "NO_TESTS"
+    elif analyzed["execution_summary"]["failed_tests"] >= 1:
+        analyzed["execution_summary"]["execution_status"] = "FAILED"
+    elif analyzed["execution_summary"]["failed_tests"] == 0 and analyzed["execution_summary"]["skipped_tests"] >= 1:
+        analyzed["execution_summary"]["execution_status"] = "PASSED_WITH_SKIPS"
+    elif analyzed["execution_summary"]["passed_tests"] == analyzed["execution_summary"]["total_tests"]:
+        analyzed["execution_summary"]["execution_status"] = "PASSED"
 
     return analyzed
